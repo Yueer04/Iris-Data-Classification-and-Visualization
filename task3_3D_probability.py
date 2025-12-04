@@ -10,6 +10,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 
+from classifier2d import set_chinese_font
+set_chinese_font()
 
 def task3_3d_probability():
     """绘制二分类 Logistic Regression 的 3D 概率图"""
@@ -56,3 +58,4 @@ def task3_3d_probability():
 
 if __name__ == "__main__":
     task3_3d_probability()
+
