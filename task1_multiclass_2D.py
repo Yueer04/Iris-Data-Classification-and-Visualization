@@ -13,6 +13,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from data_preview import load_iris_df
+
+# 原本任务数据加载
+X, y = load_iris_2d()
+
 
 import matplotlib.pyplot as plt
 
@@ -20,7 +25,8 @@ def task1_multiclass():
     set_chinese_font()
 
     """绘制多个分类器在2D（三分类）上的决策边界"""
-    
+    print("Preview of Iris DataFrame:")
+    print(load_iris_df().head())
     # ---- 复用基础文件数据加载方式 ----
     X, y = load_iris_2d()
 
@@ -54,6 +60,7 @@ def task1_multiclass():
 # ---- 程序入口 ----
 if __name__ == "__main__":
     task1_multiclass()
+
 
 
 
