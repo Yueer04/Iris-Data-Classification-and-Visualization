@@ -1,9 +1,61 @@
+# =====================================================
+# 该文件为基础文件（原功能完全保留）
+# 添加：load_iris_2d() 函数用于复用数据加载
+# 添加：plot_decision_boundary_2d() 函数用于复用绘图风格
+# =====================================================
+
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+
+# =====================================================
+# 函数接口 1：加载 Iris 后两个特征（复用风格）
+# =====================================================
+def load_iris_2d():
+    """加载 Iris 的后两个特征（petal length, petal width）"""
+    iris = load_iris()
+    X = iris.data[:, 2:]   # 完全复用基础代码
+    y = iris.target
+    return X, y
+
+
+# =====================================================
+# 函数接口 2：绘制 2D 决策边界风格
+# 供 task1 调用，实现“复用基础文件风格”
+# =====================================================
+def plot_decision_boundary_2d(model, X, y, title="Decision Boundary"):
+    """复用原来的 2D meshgrid / imshow 风格"""
+    class_colors = ['yellow', 'green', 'blue']
+    cmap_listed = mcolors.ListedColormap(class_colors)
+
+    xx, yy = np.meshgrid(
+        np.arange(X[:, 0].min() - 1, X[:, 0].max() + 1, 0.1),
+        np.arange(X[:, 1].min() - 1, X[:, 1].max() + 1, 0.1)
+    )
+
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
+
+    plt.figure(figsize=(6, 5))
+    plt.imshow(
+        Z,
+        extent=(xx.min(), xx.max(), yy.min(), yy.max()),
+        origin='lower',
+        cmap=cmap_listed,
+        alpha=0.6
+    )
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_listed, edgecolors='k')
+    plt.title(title)
+    plt.xlabel("Petal Length")
+    plt.ylabel("Petal Width")
+    plt.show()
+
+
+# =====================================================
+# 下方为原始代码（完全保留，不动）
+# =====================================================
 
 # 加载Iris数据集
 iris = load_iris()
