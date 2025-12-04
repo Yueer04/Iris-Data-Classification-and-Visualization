@@ -10,6 +10,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 
+from classifier2d import set_chinese_font
+set_chinese_font()
 
 def task4_combined():
     """绘制 3D 决策边界 + 3D 概率图"""
@@ -61,3 +63,4 @@ def task4_combined():
 
 if __name__ == "__main__":
     task4_combined()
+
