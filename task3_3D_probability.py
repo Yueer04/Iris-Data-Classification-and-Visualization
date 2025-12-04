@@ -16,47 +16,113 @@ def task3_3d_probability():
     set_chinese_font()
     """绘制二分类 Logistic Regression 的 3D 概率图"""
     
-    # ---- 数据 ----
+    # ============================
+    # 1. 加载 Iris 数据（三个特征，二分类）
+    # ============================
     iris = load_iris()
-    X = iris.data[:, :3]
-    y = (iris.target != 0).astype(int)
+    X = iris.data[:, :3]               # 取前三个特征 x1, x2, x3
+    y = (iris.target == 1).astype(int) # 只分类“Versicolor”(1) 其他为 0
 
-    # ---- 模型 ----
-    model = LogisticRegression(max_iter=200).fit(X, y)
+    model = LogisticRegression().fit(X, y)
 
-    # ---- 生成 3D 网格 ----
-    n = 25
-    x = np.linspace(X[:, 0].min(), X[:, 0].max(), n)
-    y_ = np.linspace(X[:, 1].min(), X[:, 1].max(), n)
-    z = np.linspace(X[:, 2].min(), X[:, 2].max(), n)
+    # ============================
+    # 2. 构建 x1-x2 网格，固定 x3
+    # ============================
+    x1 = np.linspace(X[:,0].min(), X[:,0].max(), 100)
+    x2 = np.linspace(X[:,1].min(), X[:,1].max(), 100)
+    X1g, X2g = np.meshgrid(x1, x2)
 
-    xx, yy, zz = np.meshgrid(x, y_, z)
-    grid = np.c_[xx.ravel(), yy.ravel(), zz.ravel()]
+    # 固定第三个特征 x3 为其中位数
+    x3_fixed = np.median(X[:,2])
+    X3g = np.full_like(X1g, x3_fixed)
 
-    # ---- 预测概率 ----
-    prob = model.predict_proba(grid)[:, 1].reshape(xx.shape)
+    # 组合成模型输入
+    grid = np.c_[X1g.ravel(), X2g.ravel(), X3g.ravel()]
 
-    # ---- 绘制概率点云 ----
-    fig = plt.figure(figsize=(12, 10))
+    # 预测分类为 1 的概率
+    p1 = model.predict_proba(grid)[:, 1].reshape(X1g.shape)
+
+    # ============================
+    # ★★ 关键：将概率映射为 Z 轴高度（-100 ~ +100）★★
+    # ============================
+    Z = (p1 - 0.5) * 200
+
+    # ============================
+    # 3. 绘制与示例风格一致的 3D 图形
+    # ============================
+    fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(111, projection='3d')
 
-    sc = ax.scatter(xx, yy, zz, c=prob, cmap='coolwarm',
-                    alpha=0.6, s=18)
-    fig.colorbar(sc, ax=ax, shrink=0.6, label="P(Class 1)")
+    # --- 中间蓝色 3D 曲面 ---
+    ax.plot_surface(
+        X1g, X2g, Z,
+        cmap="Blues",
+        edgecolor="none",
+        alpha=0.6
+    )
 
-    # 原始数据点
-    ax.scatter(X[:, 0], X[:, 1], X[:, 2],
-               c=y, cmap='bwr', edgecolor='k', s=70)
+    # --- 蓝色 Wireframe（网格线）---
+    ax.plot_wireframe(
+        X1g, X2g, Z,
+        color="navy",
+        linewidth=0.5
+    )
 
-    ax.set_xlabel("Sepal Length")
-    ax.set_ylabel("Sepal Width")
-    ax.set_zlabel("Petal Length")
-    ax.set_title("Task 3 — 3D Probability Map")
+    # --- 左侧墙面概率等高线投影 ---
+    ax.contourf(
+        X1g, X2g, Z,
+        zdir='x',
+        offset=X[:,0].min() - 0.5,
+        cmap="coolwarm",
+        alpha=0.6
+    )
 
+    # --- 右侧墙面概率等高线投影 ---
+    ax.contourf(
+        X1g, X2g, Z,
+        zdir='y',
+        offset=X[:,1].max() + 0.5,
+        cmap="coolwarm",
+        alpha=0.6
+    )
+
+    # --- 底部平面概率等高线投影 ---
+    ax.contourf(
+        X1g, X2g, Z,
+        zdir='z',
+        offset=-120,
+        cmap='coolwarm',
+        alpha=0.85
+    )
+
+    # --- 顶部漂浮概率等高线投影 ---
+    ax.contourf(
+        X1g, X2g, Z,
+        zdir='z',
+        offset=120,
+        cmap='coolwarm',
+        alpha=0.55
+    )
+
+    # ============================
+    # 4. 设置坐标轴范围（与示例保持一致）
+    # ============================
+    ax.set_xlim(X[:,0].min() - 0.5, X[:,0].max())
+    ax.set_ylim(X[:,1].min(), X[:,1].max() + 0.5)
+    ax.set_zlim(-120, 120)
+
+    ax.set_xlabel("X1（Sepal Length）")
+    ax.set_ylabel("X2（Sepal Width）")
+    ax.set_zlabel("Z（概率映射高度）")
+
+    ax.view_init(elev=30, azim=-60)
+
+    plt.tight_layout()
     plt.show()
 
 
 if __name__ == "__main__":
     task3_3d_probability()
+
 
 
