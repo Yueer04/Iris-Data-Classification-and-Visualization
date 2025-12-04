@@ -1,8 +1,24 @@
+# =====================================================
+# 在顶部添加可供任务 py 调用的函数
+# =====================================================
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+# =====================================================
+# 在顶部添加可供任务 py 调用的函数
+# =====================================================
+def load_iris_df():
+    """供任务文件统一加载 iris dataframe"""
+    df = sns.load_dataset("iris").dropna()
+    df["species"] = df["species"].astype("category").cat.codes
+    return df
+
+# =====================================================
+# 以下为原始代码（保持不变）
+# =====================================================
 # 加载数据集（比如Iris）
 df = sns.load_dataset('iris')
 print(df[50:100])
