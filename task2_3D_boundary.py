@@ -10,6 +10,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 
+from classifier2d import set_chinese_font
+set_chinese_font()
+
 
 def task2_3d_boundary():
     """绘制二分类 Logistic Regression 的 3D 决策边界"""
@@ -58,3 +61,4 @@ def task2_3d_boundary():
 
 if __name__ == "__main__":
     task2_3d_boundary()
+
