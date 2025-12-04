@@ -26,11 +26,16 @@ def load_iris_2d():
 # 函数接口 2：绘制 2D 决策边界风格
 # 供 task1 调用，实现“复用基础文件风格”
 # =====================================================
-def plot_decision_boundary_2d(model, X, y, title="Decision Boundary"):
-    """复用原来的 2D meshgrid / imshow 风格"""
+def plot_decision_boundary_2d(model, X, y, title="Decision Boundary", ax=None):
+    """
+    复用你原来的 2D meshgrid / imshow 风格。
+    支持传入 ax，这样就能在 subplot 中正常绘图。
+    """
+    
     class_colors = ['yellow', 'green', 'blue']
     cmap_listed = mcolors.ListedColormap(class_colors)
 
+    # 创建 meshgrid
     xx, yy = np.meshgrid(
         np.arange(X[:, 0].min() - 1, X[:, 0].max() + 1, 0.1),
         np.arange(X[:, 1].min() - 1, X[:, 1].max() + 1, 0.1)
@@ -38,19 +43,27 @@ def plot_decision_boundary_2d(model, X, y, title="Decision Boundary"):
 
     Z = model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
-    plt.figure(figsize=(6, 5))
-    plt.imshow(
+    # 如果没有传入 ax，则创建 figure + ax
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(6, 5))
+
+    # 绘制决策边界
+    ax.imshow(
         Z,
         extent=(xx.min(), xx.max(), yy.min(), yy.max()),
         origin='lower',
         cmap=cmap_listed,
         alpha=0.6
     )
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_listed, edgecolors='k')
-    plt.title(title)
-    plt.xlabel("Petal Length")
-    plt.ylabel("Petal Width")
-    plt.show()
+
+    # 绘制散点
+    ax.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_listed, edgecolors='k')
+
+    ax.set_title(title)
+    ax.set_xlabel("Petal Length")
+    ax.set_ylabel("Petal Width")
+
+    return ax
 
 
 # =====================================================
