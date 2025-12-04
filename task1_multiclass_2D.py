@@ -15,6 +15,9 @@ from sklearn.tree import DecisionTreeClassifier
 
 import matplotlib.pyplot as plt
 
+from classifier2d import set_chinese_font
+set_chinese_font()
+
 
 def task1_multiclass():
     """绘制多个分类器在2D（三分类）上的决策边界"""
@@ -53,4 +56,5 @@ def task1_multiclass():
 # ---- 程序入口 ----
 if __name__ == "__main__":
     task1_multiclass()
+
 
