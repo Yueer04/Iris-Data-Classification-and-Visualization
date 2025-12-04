@@ -4,16 +4,29 @@
 # 添加：plot_decision_boundary_2d() 函数用于复用绘图风格
 # =====================================================
 
+# =====================================================
+# classifier2d.py
+# 修正版：用于 Project 3 的基础文件
+# - 提供可复用 2D 数据加载函数
+# - 提供可复用 2D 决策边界绘图函数
+# - 不会在 import 时自动绘图（避免干扰任务文件）
+# - 完整保留原始示例绘图（放在 if __name__=="__main__" 中）
+# =====================================================
+
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import matplotlib.pyplot as plt
 
-plt.rcParams['font.sans-serif'] = ['SimHei']   # 设置中文黑体
-plt.rcParams['axes.unicode_minus'] = False     # 解决负号显示问题
+# =====================================================
+# 函数：设置中文字体
+# =====================================================
+def set_chinese_font():
+    """全局设置中文显示"""
+    plt.rcParams['font.sans-serif'] = ['SimHei']     # 黑体
+    plt.rcParams['axes.unicode_minus'] = False       # 解决负号显示问题
 
 # =====================================================
 # 函数接口 1：加载 Iris 后两个特征（复用风格）
@@ -60,8 +73,12 @@ def plot_decision_boundary_2d(model, X, y, title="Decision Boundary", ax=None):
         alpha=0.6
     )
 
-    # 绘制散点
-    ax.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_listed, edgecolors='k')
+    # 绘制散点（固定 vmin/vmax 避免颜色混乱）
+    ax.scatter(
+        X[:, 0], X[:, 1], c=y,
+        cmap=cmap_listed, edgecolors='k',
+        vmin=0, vmax=2
+    )
 
     ax.set_title(title)
     ax.set_xlabel("Petal Length")
@@ -71,69 +88,76 @@ def plot_decision_boundary_2d(model, X, y, title="Decision Boundary", ax=None):
 
 
 # =====================================================
-# 下方为原始代码（完全保留，不动）
+# 下方为原始代码
+# 使用 if __name__=="__main__" 包裹，防止 import 时执行
 # =====================================================
 
-# 加载Iris数据集
-iris = load_iris()
-X = iris.data[:, 2:]  # 选择后两个特征进行可视化
-y = iris.target
+if __name__ == "__main__":
 
-# 划分数据集
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    # 中文字体
+    set_chinese_font()
 
-# 训练逻辑回归模型
-model = LogisticRegression(max_iter=200)
-model.fit(X_train, y_train)
+    # 加载Iris数据集
+    iris = load_iris()
+    X = iris.data[:, 2:]  # 选择后两个特征进行可视化
+    y = iris.target
 
-# 可视化决策边界
-xx, yy = np.meshgrid(np.arange(X[:, 0].min() - 1, X[:, 0].max() + 1, 0.1),
+    # 划分数据集
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+    # 训练逻辑回归模型
+    model = LogisticRegression(max_iter=200)
+    model.fit(X_train, y_train)
+
+    # 可视化决策边界
+    xx, yy = np.meshgrid(np.arange(X[:, 0].min() - 1, X[:, 0].max() + 1, 0.1),
                      np.arange(X[:, 1].min() - 1, X[:, 1].max() + 1, 0.1))
 
-# 使用 predict_proba 方法获取每个点的概率
-probs = model.predict_proba(np.c_[xx.ravel(), yy.ravel()])
-probs = probs.reshape(xx.shape[0], xx.shape[1], 3)  # reshape to (height, width, classes)
+    # 使用 predict_proba 方法获取每个点的概率
+    probs = model.predict_proba(np.c_[xx.ravel(), yy.ravel()])
+    probs = probs.reshape(xx.shape[0], xx.shape[1], 3)  # reshape to (height, width, classes)
 
-# 设置每个类别的固定颜色
-class_colors = ['yellow', 'green', 'blue']  # 自定义颜色：黄、绿、蓝
+    # 设置每个类别的固定颜色
+    class_colors = ['yellow', 'green', 'blue']  # 自定义颜色：黄、绿、蓝
 
-# 创建图形，画决策边界图 + 概率图
-fig, axs = plt.subplots(1, 4, figsize=(20, 5))
+    # 创建图形，画决策边界图 + 概率图
+    fig, axs = plt.subplots(1, 4, figsize=(20, 5))
 
-# **1. 整体决策边界图**
-Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
-Z = Z.reshape(xx.shape)
+    # **1. 整体决策边界图**
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
 
-#  **使用imshow绘制决策区域**
-# 使用 Z 来填充区域，确保每个类别的区域有不同的颜色
-axs[0].imshow(Z, extent=(xx.min(), xx.max(), yy.min(), yy.max()), origin='lower',
+    #  **使用imshow绘制决策区域**
+    # 使用 Z 来填充区域，确保每个类别的区域有不同的颜色
+    axs[0].imshow(Z, extent=(xx.min(), xx.max(), yy.min(), yy.max()), origin='lower',
           cmap=plt.cm.colors.ListedColormap(class_colors), alpha=0.6)
-axs[0].scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', marker='o', s=50, cmap=mcolors.ListedColormap(class_colors))
-axs[0].set_title('Overall Decision Boundaries')
-axs[0].set_xlabel('Petal Length')
-axs[0].set_ylabel('Sepal Width')
+    axs[0].scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', marker='o', s=50, cmap=mcolors.ListedColormap(class_colors))
+    axs[0].set_title('Overall Decision Boundaries')
+    axs[0].set_xlabel('Petal Length')
+    axs[0].set_ylabel('Sepal Width')
 
-# **2, 3, 4. 每一类的概率图**
-for i, class_prob in enumerate(probs.transpose(2, 0, 1)):  # i corresponds to each class
-    ax = axs[i + 1]  # Use axs[1], axs[2], axs[3] for individual class probabilities
+    # **2, 3, 4. 每一类的概率图**
+    for i, class_prob in enumerate(probs.transpose(2, 0, 1)):  # i corresponds to each class
+        ax = axs[i + 1]  # Use axs[1], axs[2], axs[3] for individual class probabilities
+        
+        # 对每个类别绘制概率图，并设置渐变色
+        cmap = mcolors.LinearSegmentedColormap.from_list(
+            f'class_{i}_colormap', ['white', class_colors[i]], N=256)
+        contour = ax.contourf(xx, yy, class_prob, alpha=0.7, cmap=cmap)
     
-    # 对每个类别绘制概率图，并设置渐变色
-    cmap = mcolors.LinearSegmentedColormap.from_list(
-        f'class_{i}_colormap', ['white', class_colors[i]], N=256)
-    contour = ax.contourf(xx, yy, class_prob, alpha=0.7, cmap=cmap)
+        # 画数据点，按照预测的类别显示
+        ax.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', marker='o', s=50, cmap=mcolors.ListedColormap(class_colors), alpha=1)
     
-    # 画数据点，按照预测的类别显示
-    ax.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', marker='o', s=50, cmap=mcolors.ListedColormap(class_colors), alpha=1)
+        # 添加color bar
+        fig.colorbar(contour, ax=ax)
     
-    # 添加color bar
-    fig.colorbar(contour, ax=ax)
-    
-    # 设置标题和标签
-    ax.set_title(f'Class {i} Probability')
-    ax.set_xlabel('Petal Length')
-    ax.set_ylabel('Sepal Width')
+         # 设置标题和标签
+        ax.set_title(f'Class {i} Probability')
+        ax.set_xlabel('Petal Length')
+        ax.set_ylabel('Sepal Width')
 
-# 调整布局
-plt.tight_layout()
-plt.show()
+    # 调整布局
+    plt.tight_layout()
+    plt.show()
+
 
