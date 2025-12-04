@@ -116,10 +116,17 @@ def task4_combined():
                 c=y, cmap="viridis", edgecolor='k', s=50)
     ax4.set_title("P(Class 2)")
 
-    plt.suptitle("Task 4 — 三分类三特征：决策边界 + 3D 概率图", fontsize=18)
-    plt.tight_layout()
+    # 使用 constrained layout（推荐，解决所有标题重叠问题）
+    fig.set_constrained_layout(True)
+
+    # 设置主标题（不再与子图重叠）
+    fig.suptitle(
+    "Task 4 — 三分类三特征：决策边界 + 概率图（四图合一）",
+        fontsize=20
+    )
     plt.show()
 
 
 if __name__ == "__main__":
     task4_combined()
+
