@@ -10,6 +10,10 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.sans-serif'] = ['SimHei']   # 设置中文黑体
+plt.rcParams['axes.unicode_minus'] = False     # 解决负号显示问题
 
 # =====================================================
 # 函数接口 1：加载 Iris 后两个特征（复用风格）
