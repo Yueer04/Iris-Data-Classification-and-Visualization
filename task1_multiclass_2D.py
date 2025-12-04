@@ -41,8 +41,9 @@ def task1_multiclass():
     for idx, (name, model) in enumerate(models.items()):
         model.fit(X_train, y_train)
 
-        plt.subplot(2, 2, idx + 1)
-        plot_decision_boundary_2d(model, X, y, title=name)
+        ax = plt.subplot(2, 2, idx + 1)
+        plot_decision_boundary_2d(model, X, y, title=name, ax=ax)
+
 
     plt.suptitle("Task 1 — 多分类器三分类 2D 决策边界", fontsize=16)
     plt.tight_layout()
@@ -52,3 +53,4 @@ def task1_multiclass():
 # ---- 程序入口 ----
 if __name__ == "__main__":
     task1_multiclass()
+
