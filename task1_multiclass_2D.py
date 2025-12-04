@@ -93,7 +93,7 @@ def task1_multiclass():
     # 填充 4×4 grid
     # =======================
     idx_plot = 0
-    for (name, model), cmap in zip(models, row_cmaps):
+    for (name, model), cmap in zip(models.items(), row_cmaps):
         model.fit(X_train, y_train)
         proba = model.predict_proba(grid).reshape(300, 300, 3)
 
@@ -172,3 +172,4 @@ def task1_multiclass():
 # 程序入口
 if __name__ == "__main__":
     task1_multiclass()
+
