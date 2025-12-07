@@ -21,8 +21,21 @@
 
 ```
 Project3/
+│── images/                   # 存放生成的 png 图片
+│      ├── data_preview.png
+│      ├── Sepal Length vs Sepal Width.png
+│      ├── Sepal Length vs Petal Length.png      
+│      ├── Sepal Length vs Petal Width.png
+│      ├── Sepal Width vs Petall Length.png
+│      ├── Sepal Width vs Petal Width.png
+│      ├── Petal Length vs Petal Width.png
+│      ├── task1.png
+│      ├── task2.png
+│      ├── task3.png
+│      ├── task4.png
+│
 │── classifier2d.py           # 工具文件：中文字体、2D 数据加载、2D 决策边界绘图
-│── data_preview.py           # 数据预览（箱线图等）
+│── data_preview.py           # 数据预览（箱线图与交互式散点图）
 │── task1_multiclass_2D.py    # 任务 1：三分类 2D 决策边界
 │── task2_3D_boundary.py      # 任务 2：两分类 3D 决策边界
 │── task3_3D_probability.py   # 任务 3：两分类 3D 概率图
@@ -50,6 +63,24 @@ Project3/
 * 2：Virginica
 
 ---
+🖼 数据展示
+
+📊 数据预览（箱线图 + 交互式散点图）
+![箱线图](images/data_preview.png)
+
+![Sepal Length vs Sepal Width](images/Sepal%20Length%20vs%20Sepal%20Width.png)
+
+![Sepal Length vs Petal Length](images/Sepal%20Length%20vs%20Petal%20Length.png)
+
+![Sepal Length vs Petal Width](images/Sepal%20Length%20vs%20Petal%20Width.png)
+
+![Sepal Width vs Petall Length](images/Sepal%20Width%20vs%20Petall%20Length.png)
+
+![Sepal Width vs Petal Width](images/Sepal%20Width%20vs%20Petal%20Width.png)
+
+![Petal Length vs Petal Width](images/Petal%20Length%20vs%20Petal%20Width.png)
+
+---
 
 # 📝 任务说明
 
@@ -65,6 +96,9 @@ Project3/
   ✔ 整体三分类 2D 决策边界
   ✔ 每一类的概率热力图
 * 决策边界风格与 classifier2d.py 的基础风格统一
+
+🖼 结果示例
+![task1](images/task1.png)
 
 ---
 
@@ -83,6 +117,9 @@ Project3/
   ✔ 原始 3D 点云
 * 已做标准化（StandardScaler）+ PCA + 放大点云（scale_factor）以满足 PPT 效果
 
+🖼 结果示例
+![task2](images/task2.png)
+
 ---
 
 ## 🎯 Task 3 — 两分类 / 三个特征（3D 概率图）
@@ -97,6 +134,9 @@ Project3/
   ✔ 3D 概率曲面
   ✔ 4 个方向的概率投影（墙面＋上下平面）
 * 风格与 PPT 中的 3D 概率图一致
+
+🖼 结果示例
+![task3](images/task3.png)
 
 ---
 
@@ -122,6 +162,9 @@ Project3/
 * 视角、透明度、颜色与 PPT 风格一致
 * 网格密度控制良好（22³）
 * 每个子图都叠加原始数据点
+
+🖼 结果示例
+![task4](images/task4.png)
 
 ---
 
