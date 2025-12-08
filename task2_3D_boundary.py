@@ -33,7 +33,7 @@ def task2_3d_boundary():
     pca = PCA(n_components=3)
     X3 = pca.fit_transform(X_scaled)
 
-    # --- 方案 A：放大点云，使点不再集中 ---
+    # --- 放大点云，使点不再集中 ---
     scale_factor = 5.0
     X3 = X3 * scale_factor
 
@@ -87,3 +87,4 @@ def task2_3d_boundary():
 
 if __name__ == "__main__":
     task2_3d_boundary()
+
