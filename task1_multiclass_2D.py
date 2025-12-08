@@ -12,15 +12,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-
 from data_preview import load_iris_df
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-# 原本任务数据加载
-X, y = load_iris_2d()
 
 
 def task1_multiclass():
@@ -169,6 +165,7 @@ def task1_multiclass():
 # 程序入口
 if __name__ == "__main__":
     task1_multiclass()
+
 
 
 
