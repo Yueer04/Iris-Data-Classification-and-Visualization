@@ -12,7 +12,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
 
 from data_preview import load_iris_df
 
@@ -172,4 +171,5 @@ def task1_multiclass():
 # 程序入口
 if __name__ == "__main__":
     task1_multiclass()
+
 
