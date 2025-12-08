@@ -23,8 +23,6 @@ import matplotlib.colors as mcolors
 X, y = load_iris_2d()
 
 
-import matplotlib.pyplot as plt
-
 def task1_multiclass():
     set_chinese_font()
 
@@ -171,5 +169,6 @@ def task1_multiclass():
 # 程序入口
 if __name__ == "__main__":
     task1_multiclass()
+
 
 
